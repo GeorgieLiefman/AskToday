@@ -1,71 +1,91 @@
-from flask import Flask
+from operator import pos
+import os
+from flask import Flask, jsonify, request
+from flask_sqlalchemy import SQLAlchemy
+
+(
+    db_user,
+    db_pass,
+    db_name,
+    db_domain
+) = (os.environ.get(item) for item in [
+    "DB_USER",
+    "DB_PASS",
+    "DB_NAME",
+    "DB_DOMAIN"
+])
 
 app = Flask(__name__)
 
+app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql+psycopg2://{db_user}:{db_pass}@{db_domain}/{db_name}"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
+
+db = SQLAlchemy(app)
+
+class Post(db.Model):
+    __tablename__ = "posts"
+    post_id = db.Column(db.Integer, primary_key=True)
+    post_title = db.Column(db.String(80), unique=True, nullable=False)
+
+    def __init__(self, post_title):
+        self.post_title = post_title
+
+    @property
+    def serialize(self):
+        return {
+            "post_id": self.post_id,
+            "post_title": self.post_title
+        }
+
+
+
+
+
+
+db.create_all()
 
 # Homepage
 @app.route('/home/', methods=["PUT", "PATCH"])
 def home_page():
     return "This page will be a homepage for users to signup and login."
 
-    
-# Feed page
+
+# Get the feed
 @app.route('/feed/', methods=["GET"])
-def feed():
-    return "This page will display users' feed with latest answered questions."
+def get_feed():
+    feed = Post.query.all()
+    return jsonify([post.serialize for post in feed])
 
 
-# Users' profile page
-@app.route('/profile/<string:username>/', methods=["GET"])
-def profile_display(username):
-    return f"This page will display {username}'s profile and their previously asked questions."
+#Submit a post
+@app.route('/submit_post/', methods=["POST"])
+def submit_post():
+    new_post = Post(request.json['post_title'])
+    db.session.add(new_post)
+    db.session.commit()
+    return jsonify(new_post.serialize)
 
-@app.route('/profile/<string:username>/', methods=["Delete"])
-def profile_delete(username):
-    return f"This page will display {username}'s profile and let them delete their previously asked questions."
+# Get a specific post
+@app.route('/feed/<int:id>/', methods=["GET"])
+def get_post(id):
+    post = Post.query.get_or_404(id)
+    return jsonify(post.serialize)
 
-@app.route('/profile/<string:username>/', methods=["PUT", "PATCH"])
-def profile_edit_qs(username):
-    return f"This page will display {username}'s profile and let them edit their previously asked questions."
-
-
-
-# Edit profile page
-@app.route('/profile/<string:username>/edit', methods=["PUT", "PATCH"])
-def profile_edit(username):
-    return f"This page will display {username}'s profile and let them edit their profile."
-
-
-
-# Unanswered questions page
-@app.route('/question/unanswered/', methods=["GET"])
-def unanwsered_qs_display():
-    return "This page will display users' unanswered questions."
-
-@app.route('/question/unanswered/', methods=["PUT", "PATCH"])
-def unanwsered_qs_post():
-    return "This page will allow for users to answer unanswered questions."
-
-
-# Previously answered questions page
-@app.route('/question/answered/', methods=["GET"])
-def previous_qs_display():
-    return "This page will display any questions the current user has answered."
-
-@app.route('/question/answered/', methods=["PUT", "PATCH"])
-def previous_qs_edit():
-    return "This will allow for users to edit their previous answers."
-
-@app.route('/question/answered/', methods=["DELETE"])
-def previous_qs_delete():
-    return "This will allow for users to delete their previous answers."
+# Edit a specific post
+@app.route('/feed/<int:id>/', methods=["PUT", "PATCH"])
+def update_post(id):
+    post = Post.query.filter_by(post_id=id)
+    post.update(dict(post_title=request.json["post_title"]))
+    db.session.commit()
+    return jsonify(post.first().serialize)
 
 
 
-# Submit question page
-@app.route('/question/submit/', methods=["POST"])
-def ask_a_qs():
-    return "This page will allow users to submit a question to the site."
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# Edit a specific post
+@app.route('/feed/<int:id>/', methods=["DELETE"])
+def delete_post(id):
+    post = Post.query.get_or_404(id)
+    db.session.delete(post)
+    db.session.commit()
+    return jsonify(post.serialize)
