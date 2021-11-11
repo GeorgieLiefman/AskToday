@@ -8,9 +8,3 @@ class Post(db.Model):
         def __init__(self, post_title):
             self.post_title = post_title
 
-        @property
-        def serialize(self):
-            return {
-                "post_id": self.post_id,
-                "post_title": self.post_title
-            }
