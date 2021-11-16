@@ -1,3 +1,4 @@
+from html.entities import html5
 import unittest
 from main import create_app
 from dotenv import load_dotenv
@@ -17,8 +18,8 @@ class TestPosts(unittest.TestCase):
         data = response.get_json()
 
         self.assertEqual(response.status_code, 200)
-        self.assertIsInstance(data, list)
+        self.assertIn(b'<h1>Feed</h2>', response.data)
 
     def test_create_bad_post(self):
-        response = self.client.post("/submit_post/", json={"post_title": ""})
+        response = self.client.post("/submit_post/", data={"post_title": ""})
         self.assertEqual(response.status_code, 400)

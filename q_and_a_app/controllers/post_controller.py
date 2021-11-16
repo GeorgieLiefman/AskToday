@@ -1,7 +1,8 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, render_template
 from main import db
 from models.posts import Post
 from schemas.post_schema import post_schema, posts_schema
+
 
 posts = Blueprint('posts', __name__)
 
@@ -15,14 +16,17 @@ def home_page():
 # Get the feed
 @posts.route('/feed/', methods=["GET"])
 def get_feed():
-    feed = Post.query.all()
-    return jsonify(posts_schema.dump(feed))
+    data = {
+        "page_title": "Feed",
+        "posts": posts_schema.dump(Post.query.all())
+    }
+    return render_template("feed.html", page_data = data)
 
 
 #Submit a post
-@posts.route('/submit_post/', methods=["POST"])
+@posts.route('/feed/', methods=["POST"])
 def submit_post():
-    new_post = post_schema.load(request.json)
+    new_post = post_schema.load(request.form)
     db.session.add(new_post)
     db.session.commit()
     return jsonify(post_schema.dump(new_post))
