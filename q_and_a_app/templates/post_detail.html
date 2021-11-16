@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>{{ page_data.post.post_title }}</h2>
+    <p>Post ID: {{ page_data.post.post_id }}</p>
+    <form action="/feed/{{ page_data.post.post_id }}/", method="POST">
+        <input type="text" name="post_title" placeholder="Post title ..."/>
+        <button>Update!</button>
+    </form>
+    <br> <br>
+    <form action="/feed/{{ page_data.post.post_id }}/delete/", method="POST">
+        <button>Delete post!</button>
+    </form>
+{% endblock %}

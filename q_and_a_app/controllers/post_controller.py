@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, render_template
+from flask import Blueprint, jsonify, request, render_template, redirect, url_for
 from main import db
 from models.posts import Post
 from schemas.post_schema import post_schema, posts_schema
@@ -8,9 +8,12 @@ posts = Blueprint('posts', __name__)
 
 
 # Homepage
-@posts.route('/home/', methods=["PUT", "PATCH"])
+@posts.route('/', methods=["GET"])
 def home_page():
-    return "This page will be a homepage for users to signup and login."
+    data = {
+        "page_title": "Homepage"
+    }
+    return render_template("homepage.html", page_data=data)
 
 
 # Get the feed
@@ -29,29 +32,38 @@ def submit_post():
     new_post = post_schema.load(request.form)
     db.session.add(new_post)
     db.session.commit()
-    return jsonify(post_schema.dump(new_post))
+    return redirect(url_for("posts.get_feed"))
 
 # Get a specific post
 @posts.route('/feed/<int:id>/', methods=["GET"])
 def get_post(id):
     post = Post.query.get_or_404(id)
-    return jsonify(post_schema.dump(post))
+    data = {
+        "page_title": "Post Detail",
+        "post": post_schema.dump(post)
+    }
+    return render_template("post_detail.html", page_data = data)
 
 # Edit a specific post
-@posts.route('/feed/<int:id>/', methods=["PUT", "PATCH"])
+@posts.route('/feed/<int:id>/', methods=["POST"])
 def update_post(id):
     post = Post.query.filter_by(post_id=id)
-    updated_fields = post_schema.dump(request.json)
+    updated_fields = post_schema.dump(request.form)
     if updated_fields:
         post.update(updated_fields)
         db.session.commit()
-    return jsonify(post_schema.dump(post.first()))
+
+    data = {
+        "page_title": "Post Detail",
+        "post": post_schema.dump(post.first())
+    }
+    return render_template("post_detail.html", page_data = data)
 
 
-# Edit a specific post
-@posts.route('/feed/<int:id>/', methods=["DELETE"])
+# Delete a specific post
+@posts.route('/feed/<int:id>/delete/', methods=["POST"])
 def delete_post(id):
     post = Post.query.get_or_404(id)
     db.session.delete(post)
     db.session.commit()
-    return jsonify(post_schema.dump(post))
+    return redirect(url_for("posts.get_feed"))
