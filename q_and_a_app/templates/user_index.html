@@ -2,7 +2,7 @@
 {% block content %}
 
     {% for user in page_data.users %}
-        <li>{{% user.name %}}: {{% user.email %}}</li>
-        {% endfor %} 
+        <li>{{ user.name }}: {{ user.email }}</li>
+    {% endfor %} 
 
 {% endblock %}
