@@ -19,6 +19,7 @@ users = Blueprint("users", __name__)
 # The GET routes endpoint
 @users.route("/users/", methods=["GET"])
 def get_users():
+    """Displays a list of users from the database."""
     data = {
     "page_title": "User Index",
     "users": users_schema.dump(User.query.all())
@@ -27,6 +28,7 @@ def get_users():
 
 @users.route("/users/signup/", methods = ["GET", "POST"])
 def sign_up():
+    """Displays the signup form/creates a new user when the form is submitted."""
     data = {"page_title": "Sign Up"}
     
     if request.method == "GET":
@@ -37,3 +39,17 @@ def sign_up():
     db.session.commit()
     login_user(new_user)
     return redirect(url_for("users.get_users"))
+
+@users.route("/users/login/", methods=["GET", "POST"])
+def log_in():
+    data = {"page_title": "Log In"}
+
+    if request.method == "GET":
+        return render_template("login.html", page_data = data)
+
+    user = User.query.filter_by(email=request.form["email"]).first()
+    if user and user.check_password(password=request.form["password"]):
+        login_user(user)
+        return redirect(url_for("posts.get_feed"))
+
+    abort(401, "Login unsuccessful. Did you supply the correct username and password?")
