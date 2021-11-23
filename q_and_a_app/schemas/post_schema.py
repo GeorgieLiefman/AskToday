@@ -7,6 +7,7 @@ from marshmallow.validate import Length
 class PostSchema(ma.SQLAlchemyAutoSchema):
     post_id = auto_field(dump_only = True)
     post_title = auto_field(required = True, validate = Length(min = 1))
+    post_content = auto_field(validate = Length(min = 1))
 
     class Meta:
         model = Post

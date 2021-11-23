@@ -13,6 +13,9 @@
     <br/>
     <h2>Previous Posts</h2>
     {% for post in page_data.posts%}
-        <a href="/feed/{{ post.post_id }}/">{{ post.post_title }}</a></br>
+        <a href="/feed/{{ post.post_id }}/">{{ post.post_title }}</a> </br>
+        <h5>Post Content</h5>
+        <p>{{ post.post_content }}</p>
+        
     {% endfor %}
 {% endblock %}
