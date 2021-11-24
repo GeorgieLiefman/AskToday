@@ -40,7 +40,8 @@ def get_post(id):
     post = Post.query.get_or_404(id)
     data = {
         "page_title": "Post Detail",
-        "post": post_schema.dump(post)
+        "post": post_schema.dump(post),
+        "image": f"static/{post.image_filename}"
     }
     return render_template("post_detail.html", page_data = data)
 

@@ -1,15 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
     <h2>{{ page_data.post.post_title }}</h2>
+    <img src="{{ page_data.image }}"" style="width: 250px"
     <p>Post ID: {{ page_data.post.post_id }}</p>
     <p>Post Content: {{ page_data.post.post_content }}</p>
     <p>Likes: {{ page_data.post.likes }}</p>
+
+    <br><br>
+
+    <h3>Update Post Info</h3>
     <form action="/feed/{{ page_data.post.post_id }}/", method="POST">
         <input type="text" name="post_title" placeholder="Post title ..."/>
         <input type="text" name="post_content" placeholder="Post content ..."/>
         <input type="number" name="likes" placeholder="Number of likes ..."/>
         <button>Update!</button>
     </form>
+
+    <br><br>
+
+    <h3>Update Image:</h3>
+    <form action="/feed/{{ page_data.post.post_id }}/image/", method="POST" enctype="multipart/form-data">
+        <input type="file" name="image">
+        <input type="submit">
+    </form>
+
     <br> <br>
     <form action="/feed/{{ page_data.post.post_id }}/delete/", method="POST">
         <button>Delete post!</button>
