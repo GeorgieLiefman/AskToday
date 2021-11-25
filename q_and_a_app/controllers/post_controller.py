@@ -1,7 +1,9 @@
-from flask import Blueprint, jsonify, request, render_template, redirect, url_for
+from operator import pos
+from flask import Blueprint, jsonify, request, render_template, redirect, url_for, current_app
 from main import db
 from models.posts import Post
 from schemas.post_schema import post_schema, posts_schema
+import boto3
 
 
 posts = Blueprint('posts', __name__)
@@ -38,12 +40,32 @@ def submit_post():
 @posts.route('/feed/<int:id>/', methods=["GET"])
 def get_post(id):
     post = Post.query.get_or_404(id)
+
+    s3_client=boto3.client("s3")
+    bucket_name=current_app.config["AWS_S3_BUCKET"]
+    image_url = s3_client.generate_presigned_url(
+        'get_object',
+        Params={
+            "Bucket": bucket_name,
+            "Key": post.image_filename
+        },
+        ExpiresIn=100
+    )
+
     data = {
         "page_title": "Post Detail",
         "post": post_schema.dump(post),
-        "image": f"static/{post.image_filename}"
+        "image": image_url
     }
     return render_template("post_detail.html", page_data = data)
+
+
+
+
+
+
+
+
 
 # Edit a specific post
 @posts.route('/feed/<int:id>/', methods=["POST"])
