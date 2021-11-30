@@ -10,6 +10,8 @@ class Post(db.Model):
         post_content = db.Column(db.String(500), server_default="No description provided...")
         likes = db.Column(db.Integer, nullable=False, server_default="0")
 
+        creator_id = db.Column(db.Integer, db.ForeignKey('flasklogin-users.id'))
+
         @property
         def image_filename(self):
                 return f"post_images/{self.post_id}.png"

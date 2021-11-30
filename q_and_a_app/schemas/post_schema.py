@@ -9,6 +9,7 @@ class PostSchema(ma.SQLAlchemyAutoSchema):
     post_title = auto_field(required = True, validate = Length(min = 1))
     post_content = auto_field(validate = Length(min = 1))
     likes = auto_field(required = False, validate = Range(0, 10000))
+    creator = ma.Nested("UserSchema")
 
     class Meta:
         model = Post

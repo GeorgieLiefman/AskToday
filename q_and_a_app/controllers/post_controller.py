@@ -4,6 +4,7 @@ from main import db
 from models.posts import Post
 from schemas.post_schema import post_schema, posts_schema
 import boto3
+from flask_login import login_required, current_user
 
 
 posts = Blueprint('posts', __name__)
@@ -30,10 +31,13 @@ def get_feed():
 
 #Submit a post
 @posts.route('/feed/', methods=["POST"])
+@login_required
 def submit_post():
     new_post = post_schema.load(request.form)
+    new_post.creator = current_user
     db.session.add(new_post)
     db.session.commit()
+    print(post_schema.dump(new_post))
     return redirect(url_for("posts.get_feed"))
 
 # Get a specific post
