@@ -1,5 +1,5 @@
 from operator import pos
-from flask import Blueprint, jsonify, request, render_template, redirect, url_for, current_app
+from flask import Blueprint, request, render_template, redirect, url_for, current_app, abort
 from main import db
 from models.posts import Post
 from schemas.post_schema import post_schema, posts_schema
@@ -73,8 +73,13 @@ def get_post(id):
 
 # Edit a specific post
 @posts.route('/feed/<int:id>/', methods=["POST"])
+@login_required
 def update_post(id):
     post = Post.query.filter_by(post_id=id)
+
+    if current_user.id != post.first().creator_id:
+        abort(403, "You do not have permission to edit this post!")
+
     updated_fields = post_schema.dump(request.form)
     if updated_fields:
         post.update(updated_fields)
@@ -86,11 +91,32 @@ def update_post(id):
     }
     return render_template("post_detail.html", page_data = data)
 
+@posts.route("/feed/<int:id>/follow/", methods=["Post"])
+@login_required
+def follow_post(id):
+    post = Post.query.get_or_404(id)
+    post.followers.append(current_user)
+    db.session.commit()
+    return redirect(url_for('users.user_detail'))
+
+@posts.route("/feed/<int:id>/unfollow/", methods=["Post"])
+@login_required
+def unfollow_post(id):
+    post = Post.query.get_or_404(id)
+    post.followers.remove(current_user)
+    db.session.commit()
+    return redirect(url_for('users.user_detail'))
+
 
 # Delete a specific post
 @posts.route('/feed/<int:id>/delete/', methods=["POST"])
+@login_required
 def delete_post(id):
     post = Post.query.get_or_404(id)
+
+    if current_user.id != post.creator_id:
+        abort(403, "You do not have permission to delete this post!")
+
     db.session.delete(post)
     db.session.commit()
     return redirect(url_for("posts.get_feed"))

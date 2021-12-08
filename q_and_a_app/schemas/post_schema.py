@@ -1,4 +1,3 @@
-from marshmallow import validate
 from main import ma 
 from models.posts import Post
 from marshmallow_sqlalchemy import auto_field
@@ -9,7 +8,14 @@ class PostSchema(ma.SQLAlchemyAutoSchema):
     post_title = auto_field(required = True, validate = Length(min = 1))
     post_content = auto_field(validate = Length(min = 1))
     likes = auto_field(required = False, validate = Range(0, 10000))
-    creator = ma.Nested("UserSchema")
+    creator = ma.Nested(
+        "UserSchema",
+        only = ("id", "name", "email")
+        )
+    followers = ma.Nested(
+        "UserSchema",
+        only = ("id", "name", "email")
+    )
 
     class Meta:
         model = Post

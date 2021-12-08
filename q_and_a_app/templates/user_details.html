@@ -12,6 +12,15 @@
             <button>Update</button>
 
         </form>
+
+        <br><br>
+        <h3>Followed Posts: </h3>
+        <ul>
+            {% for post in current_user.followed_posts %}
+                <li><a href="/feed/{{ post.post_id }}/"> {{ post.post_title }} </a></li>
+            {% endfor %}
+        </ul>
+
     </div>
 
 {% endblock %}

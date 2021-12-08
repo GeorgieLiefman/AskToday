@@ -13,7 +13,8 @@ class User(UserMixin, db.Model):
 
     posts = db.relationship(
         'Post', 
-        backref="creator" 
+        backref="creator" ,
+        lazy="joined"
     )
     # To access the list of posts created by Georgie, we call Georgie.posts
     # = [<Post 1>, <Post 2>, ...]

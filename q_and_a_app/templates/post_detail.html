@@ -6,6 +6,12 @@
     <p>Post Content: {{ page_data.post.post_content }}</p>
     <p>Likes: {{ page_data.post.likes }}</p>
     <p>Creator: {{ page_data.post.creator.name }} ({{ page_data.post.creator.email }})</p>
+    <form action="/feed/{{ page_data.post.post_id }}/follow/", method="POST">
+        <button>Follow post</button>
+    </form>
+    <form action="/feed/{{ page_data.post.post_id }}/unfollow/", method="POST">
+        <button>Unfollow post</button>
+    </form>
 
     <br><br>
 

@@ -14,6 +14,11 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
     email = auto_field(required = True, validate = validate.Email())
     password = fields.Method(required = True, load_only = True, deserialize = "load_password")
 
+    followed_posts = ma.Nested(
+        "PostSchema",
+        only=("post_id", "post_title")
+    )
+
     def load_password(self, password):
         if len(password) > 6:
             return generate_password_hash(password, method="sha256")

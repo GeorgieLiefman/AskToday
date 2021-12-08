@@ -1,4 +1,14 @@
 from main import db
+from models.users import User
+
+
+# Generic template for a many to many relationship
+following = db.Table(
+        'following',
+        db.Column('user_id', db.Integer, db.ForeignKey('flasklogin-users.id'), primary_key=True),
+        db.Column('course_id', db.Integer, db.ForeignKey('posts.post_id'), primary_key=True)
+)
+
 
 class Post(db.Model):
         # The tablename attributes species what the name of the table should exist in the database.
@@ -11,6 +21,13 @@ class Post(db.Model):
         likes = db.Column(db.Integer, nullable=False, server_default="0")
 
         creator_id = db.Column(db.Integer, db.ForeignKey('flasklogin-users.id'))
+
+        followers = db.relationship(
+                User,
+                secondary = following,
+                backref = db.backref('followed_posts'),
+                lazy="joined"
+        )
 
         @property
         def image_filename(self):
