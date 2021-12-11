@@ -1,4 +1,3 @@
-from operator import pos
 from flask import Blueprint, request, render_template, redirect, url_for, current_app, abort
 from main import db
 from models.posts import Post

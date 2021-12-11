@@ -1,4 +1,3 @@
-from enum import unique
 from main import db
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash

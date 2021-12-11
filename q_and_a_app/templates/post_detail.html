@@ -31,6 +31,17 @@
         <input type="submit">
     </form>
 
+
+    <br><br>
+    <h2>New Reply</h2>
+        <form action="/feed/" method="POST">
+            <input type="text" name="reply_content" placeholder="Reply content ..."/>
+            <button>Submit!</button>
+        </form>
+
+
+
+
     <br> <br>
     <form action="/feed/{{ page_data.post.post_id }}/delete/", method="POST">
         <button>Delete post!</button>
