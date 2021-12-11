@@ -13,9 +13,18 @@ posts = Blueprint('posts', __name__)
 @posts.route('/', methods=["GET"])
 def home_page():
     data = {
-        "page_title": "Homepage"
+        "page_title": "AskToday"
     }
     return render_template("homepage.html", page_data=data)
+
+
+# Terms of Service page
+@posts.route('/terms/', methods=["GET"])
+def terms_of_service():
+    data = {
+        "page_title": "Terms of Service"
+    }
+    return render_template("terms_of_use.html", page_data=data)
 
 
 # Get the feed
