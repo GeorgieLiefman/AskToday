@@ -24,7 +24,7 @@ def home_page():
 def get_feed():
     data = {
         "page_title": "Feed",
-        "posts": posts_schema.dump(Post.query.all())
+        "posts": posts_schema.dump(Post.query.order_by(Post.creator_id).all())
     }
     return render_template("feed.html", page_data = data)
 

@@ -2,9 +2,11 @@ from os import error
 from flask import Blueprint, request, render_template, redirect, url_for, abort
 from main import db, lm
 from models.users import User
+from models.posts import Post
 from schemas.user_schema import user_schema, users_schema, user_update_schema
 from flask_login import login_user, logout_user, login_required, current_user
 from marshmallow import ValidationError
+from sqlalchemy import func
 
 @lm.user_loader
 def load_user(user):
@@ -59,7 +61,8 @@ def log_in():
 @login_required
 def user_detail():
     if request.method == "GET":
-        data = {"page_title": "Account Detauls"}
+        data = {"page_title": "Account Details",
+        "likes": db.session.query(func.sum(Post.likes)).filter(Post.creator_id==current_user.id).scalar()}
         return render_template("user_details.html", page_data = data)
 
     user = User.query.filter_by(id = current_user.id)
