@@ -1,8 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
 
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>    
+            <th>Name</th>
+            <th>Email</th>
+        </tr>
+    </thead>
     {% for user in page_data.users %}
-        <li>{{ user.name }}: {{ user.email }}</li>
-    {% endfor %} 
-
+    <tbody>
+        <tr>
+            <td>
+                {{ user.name }}
+            </td>
+            <td>
+                {{ user.email }}
+            </td>
+        </tr>
+    </tbody>
+    {% endfor %}
+</table>
 {% endblock %}

@@ -14,9 +14,28 @@
     </div>
     <br/>
     <h2>Previous Posts</h2>
-    {% for post in page_data.posts %}
-        <a href="/feed/{{ post.post_id }}/">{{ post.post_title }}</a> </br>
-        <p>{{ post.post_content }}</p>
-        
-    {% endfor %}
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>    
+                <th>Post Name</th>
+                <th>Post Creator</th>
+                <th>Number of Likes</th>
+            </tr>
+        </thead>
+        {% for post in page_data.posts %}
+        <tbody>
+            <tr>
+                <td>
+                    <a href="/feed/{{ post.post_id }}/">{{ post.post_title }}</a> 
+                </td>
+                <td>
+                    {{ post.creator.name }}
+                </td>
+                <td>
+                    {{ post.likes }}
+                </td>
+            </tr>
+        </tbody>
+        {% endfor %}
+    </table>
 {% endblock %}
