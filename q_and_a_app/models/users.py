@@ -1,6 +1,7 @@
 from main import db
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash
+from models.comments import Comment
 
 class User(UserMixin, db.Model):
     __tablename__ = "flasklogin-users"
@@ -15,6 +16,8 @@ class User(UserMixin, db.Model):
         backref="creator" ,
         lazy="joined"
     )
+
+    comments = db.relationship(Comment, backref='user')
     # To access the list of posts created by Georgie, we call Georgie.posts
     # = [<Post 1>, <Post 2>, ...]
 

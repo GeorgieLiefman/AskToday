@@ -33,13 +33,11 @@
 
 
     <br><br>
-    <h2>New Reply</h2>
-        <form action="/feed/" method="POST">
-            <input type="text" name="reply_content" placeholder="Reply content ..."/>
-            <button>Submit!</button>
-        </form>
+    <form class="input-group mb-3" method="Post" action="/feed/{{ page_data.post.post_id }}/create_comment/">
+        <input type="text" id="text" name="text" class="form-control" placeholder="Comment something!">
+        <button type="submit" class="btn btn-primary">Comment</button>
 
-
+    </form>
 
 
     <br> <br>

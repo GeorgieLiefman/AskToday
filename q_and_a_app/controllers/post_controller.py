@@ -99,6 +99,21 @@ def update_post(id):
     }
     return render_template("post_detail.html", page_data = data)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @posts.route("/feed/<int:id>/follow/", methods=["Post"])
 @login_required
 def follow_post(id):
