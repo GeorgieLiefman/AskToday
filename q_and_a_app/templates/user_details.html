@@ -5,19 +5,19 @@
         <form action="/users/account/" method="POST">
             <label for="name">Name:</label>
             <input type="text" name="name" value = {{ current_user.name }}>
-
+            <br>
             <label for="email">Email:</label>
             <input type="text" name="name" value = {{ current_user.email }}>
 
-            <button>Update</button>
+            <button class="btn btn-primary">Update</button>
 
         </form>
 
         <br>
-        <p>Total number of likes for all posts: {{ page_data.likes }}</p>
+        <p><strong>Total number of ranked importance for all posts:</strong> {{ page_data.ranked_importance }}</p>
 
-        <br><br>
-        <h3>Followed Posts: </h3>
+        <br>
+        <h5>Followed Posts: </h5>
         <ul>
             {% for post in current_user.followed_posts %}
                 <li><a href="/feed/{{ post.post_id }}/"> {{ post.post_title }} </a></li>

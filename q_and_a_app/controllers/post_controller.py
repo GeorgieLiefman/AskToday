@@ -48,6 +48,8 @@ def submit_post():
     print(post_schema.dump(new_post))
     return redirect(url_for("posts.get_feed"))
 
+
+
 # Get a specific post
 @posts.route('/feed/<int:id>/', methods=["GET"])
 def get_post(id):
@@ -69,6 +71,7 @@ def get_post(id):
         "post": post_schema.dump(post),
         "image": image_url
     }
+    print(post.comments)
     return render_template("post_detail.html", page_data = data)
 
 
@@ -100,20 +103,7 @@ def update_post(id):
     return render_template("post_detail.html", page_data = data)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# follow a post
 @posts.route("/feed/<int:id>/follow/", methods=["Post"])
 @login_required
 def follow_post(id):
@@ -122,6 +112,7 @@ def follow_post(id):
     db.session.commit()
     return redirect(url_for('users.user_detail'))
 
+# Unfollow a post
 @posts.route("/feed/<int:id>/unfollow/", methods=["Post"])
 @login_required
 def unfollow_post(id):

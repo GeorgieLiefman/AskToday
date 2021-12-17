@@ -5,10 +5,10 @@
         <h2>New Post</h2>
         <div>
             <form action="/feed/" method="POST">
-                <input type="text" name="post_title" placeholder="Post title ..."/>
-                <input type="text" name="post_content" placeholder="Post content ..."/>
-                <input type="number" name="likes" placeholder="Number of likes ..."/>
-                <button>Submit!</button>
+                <input class="input-group mb-3" type="text" name="post_title" placeholder="Post title ..."/>
+                <input class="input-group mb-3" type="text" name="post_content" placeholder="Post content ..."/>
+                <input type="number" name="ranked_importance" placeholder="Importance out of 10 ..."/>
+                <button class="btn btn-primary">Submit!</button>
             </form>
         </div>
 
@@ -21,7 +21,7 @@
             <tr>    
                 <th>Post Name</th>
                 <th>Post Creator</th>
-                <th>Number of Likes</th>
+                <th>Ranked Importance</th>
             </tr>
         </thead>
         {% for post in page_data.posts %}
@@ -34,7 +34,7 @@
                     {{ post.creator.name }}
                 </td>
                 <td>
-                    {{ post.likes }}
+                    {{ post.ranked_importance }}
                 </td>
             </tr>
         </tbody>

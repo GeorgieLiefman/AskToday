@@ -19,7 +19,6 @@ def unauthorized():
 users = Blueprint("users", __name__)
 
 # Displays index of all users
-# The GET routes endpoint
 @users.route("/users/", methods=["GET"])
 def get_users():
     """Displays a list of users from the database."""
@@ -29,6 +28,7 @@ def get_users():
     }
     return render_template("user_index.html", page_data = data)
 
+# Signup a user
 @users.route("/users/signup/", methods = ["GET", "POST"])
 def sign_up():
     """Displays the signup form/creates a new user when the form is submitted."""
@@ -43,6 +43,7 @@ def sign_up():
     login_user(new_user)
     return redirect(url_for("users.get_users"))
 
+# Login user
 @users.route("/users/login/", methods=["GET", "POST"])
 def log_in():
     data = {"page_title": "Log In"}
@@ -57,12 +58,13 @@ def log_in():
 
     abort(401, "Login unsuccessful. Did you supply the correct username and password?")
 
+# Individual user account page
 @users.route("/users/account/", methods = ["GET", "POST"])
 @login_required
 def user_detail():
     if request.method == "GET":
         data = {"page_title": "Account Details",
-        "likes": db.session.query(func.sum(Post.likes)).filter(Post.creator_id==current_user.id).scalar()}
+        "Ranked_importance": db.session.query(func.sum(Post.ranked_importance)).filter(Post.creator_id==current_user.id).scalar()}
         return render_template("user_details.html", page_data = data)
 
     user = User.query.filter_by(id = current_user.id)
@@ -76,6 +78,7 @@ def user_detail():
     db.session.commit()
     return redirect(url_for("users.get_users"))
 
+# Logout page
 @users.route("/users/logout/", methods=["POST"])
 @login_required
 def log_out():

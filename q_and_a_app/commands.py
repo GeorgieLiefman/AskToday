@@ -1,4 +1,3 @@
-import faker
 from main import db
 from flask import Blueprint
 
@@ -49,4 +48,12 @@ def reset_db():
         db.session.add(post)
 
     db.session.commit()
+
+
+
+
+@db_commands.cli.command("export")
+def export_data():
+    """Outputs all of the data in the database to a .txt file."""
+    db.metadata
     

@@ -9,11 +9,10 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(100), nullable = False)
     email = db.Column(db.String(40), unique = True, nullable = False)
     password = db.Column(db.String(200), nullable = False)
-    #is_admin = db.Column(db.Boolean(), nullable = False, server_default = "False")
 
     posts = db.relationship(
         'Post', 
-        backref="creator" ,
+        backref="creator",
         lazy="joined"
     )
 
