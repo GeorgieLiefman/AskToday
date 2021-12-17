@@ -55,5 +55,15 @@ def reset_db():
 @db_commands.cli.command("export")
 def export_data():
     """Outputs all of the data in the database to a .txt file."""
-    db.metadata
+    from models.posts import Post
+    from models.comments import Comment
+    from models.users import User
+
+    post_list = Post.query.all()
+    comment_list = Comment.query.all()
+    user_list = User.query.all()
+
+
+    # Use schemas to convert to dictionary which can be written to txt file
+    # Use string command to turn dictionary to txt and write that text to a file
     

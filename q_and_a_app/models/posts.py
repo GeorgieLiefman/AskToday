@@ -3,11 +3,11 @@ from models.users import User
 from models.comments import Comment
 
 
-# Generic template for a many to many relationship
+# Many-to-many relationship
 following = db.Table(
         'following',
         db.Column('user_id', db.Integer, db.ForeignKey('flasklogin-users.id'), primary_key=True),
-        db.Column('course_id', db.Integer, db.ForeignKey('posts.post_id'), primary_key=True)
+        db.Column('post_id', db.Integer, db.ForeignKey('posts.post_id'), primary_key=True)
 )
 
 

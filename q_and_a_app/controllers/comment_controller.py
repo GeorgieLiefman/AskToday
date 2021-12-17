@@ -15,21 +15,35 @@ comments = Blueprint('comments', __name__)
 def create_comment(id):
     text = request.form.get('text')
     #text.commentor = current_user
-
     if not text:
         flash('Comment cannot be empty.', category='error')
-
     else:
         post = Post.query.get_or_404(id)
         if post:
             comment = Comment(text = text, commentor_id = current_user.id, post_id = id)
             db.session.add(comment)
             db.session.commit()
-
         else:
             flash('Post does not exist', category = 'error')
-
     return redirect(url_for('posts.get_feed'))
+
+
+@comments.route("/feed/<int:id>/like_comment/", methods=["POST"])
+@login_required
+def like_comment(id):
+    comment = Comment.query.filter_by(comment_id=id).first()
+    comment.likers.append(current_user)
+    db.session.commit()
+    return redirect(url_for('users.user_detail'))
+
+
+@comments.route("/feed/<int:id>/unlike_comment/", methods=["POST"])
+@login_required
+def unlike_comment(id):
+    comment = Comment.query.filter_by(comment_id=id).first()
+    comment.likers.remove(current_user)
+    db.session.commit()
+    return redirect(url_for('users.user_detail'))
 
 
 

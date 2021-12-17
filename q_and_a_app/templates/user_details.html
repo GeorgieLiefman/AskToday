@@ -24,6 +24,14 @@
             {% endfor %}
         </ul>
 
+        <br>
+        <h5>Liked Comments: </h5>
+        <ul>
+            {% for comment in current_user.liked_comments %}
+                <li> {{ comment.text }} </a></li>
+            {% endfor %}
+        </ul>
+
     </div>
 
 {% endblock %}

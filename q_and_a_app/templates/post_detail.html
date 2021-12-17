@@ -20,9 +20,13 @@
             <tr>
                 <td>
                     {{ comment.text }}
-                    <form action="/feed/{{ page_data.post.post_id }}/delete_comment/", method="POST">
-                        <br>
-                        <button class="btn btn-sm btn-danger">Delete Comment!</button>
+                    <br><br>
+                    <form action="/feed/{{ page_data.post.post_id }}/like_comment/", method="POST">
+                        <button class="btn btn-sm btn-primary">Like comment</button>
+                    </form>
+                    <br>
+                    <form action="/feed/{{ page_data.post.post_id }}/unlike_comment/", method="POST">
+                        <button class="btn btn-sm btn-primary">Unlike comment</button>
                     </form>
                 </td>
             </tr>

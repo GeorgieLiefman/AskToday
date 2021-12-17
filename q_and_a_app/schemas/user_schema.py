@@ -19,6 +19,11 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
         only=("post_id", "post_title")
     )
 
+    liked_comments = ma.Nested(
+        "CommentSchema",
+        only=("comment_id", "text")
+    )
+
     def load_password(self, password):
         if len(password) > 6:
             return generate_password_hash(password, method="sha256")

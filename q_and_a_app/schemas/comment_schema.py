@@ -12,6 +12,10 @@ class CommentSchema(ma.SQLAlchemyAutoSchema):
         only = ("id", "name", "email"),
         )
    
+    likers = ma.Nested(
+        "UserSchema", 
+        only=("id", "name", "email",)
+    )
 
     class Meta:
         model = Comment
