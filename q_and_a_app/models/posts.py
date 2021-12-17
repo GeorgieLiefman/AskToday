@@ -18,8 +18,8 @@ class Post(db.Model):
 
         # These attributes specify what columns the table should have
         post_id = db.Column(db.Integer, primary_key=True)
-        post_title = db.Column(db.String(200), unique=True, nullable=False)
-        post_content = db.Column(db.String(2000), server_default="No description provided...")
+        post_title = db.Column(db.String(200), nullable=False)
+        post_content = db.Column(db.String(2000), nullable=True, server_default="No description provided...")
         ranked_importance = db.Column(db.Integer, nullable=False, server_default="0")
 
         comments = db.relationship(Comment, backref='post')
