@@ -46,3 +46,18 @@ On this page users are able to access their individual account information, incl
 6. Finally, all the packages from the requirements.txt must be installed before the application can be run. This can be achieved by running the command 'pip install -r requirements.txt' in the command line. Make sure you are still in the directory outlined above.
 
 # <center><br> Set Up Instructions </center> #
+1. Ensure all the necessary software and dependencies discussed in the installation instructions have been downloaded and are ready to go on your machine.
+ 
+2. Navigate into the directory named ‘q_and_a_app’ via the terminal.
+ 
+3. In order to create the databases for the website to run type the following command into your terminal 'flask db init'.
+ 
+4. Next type in the command 'flask db migrate -m "initial migration"'.
+ 
+5. Finally enter 'flask db upgrade' into your terminal and the databases should now be functioning.
+ 
+6. Enter the command 'flask run' to launch the application.
+ 
+7. The application will now be running on your local host if you have followed all the steps correctly. Type the address 'http://127.0.0.1:5000/' into your browser to access the site.
+ 
+8. In order to stop running the application type 'CTRL+C' into your terminal.
