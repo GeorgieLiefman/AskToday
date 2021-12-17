@@ -1,8 +1,8 @@
-"""new initial migration
+"""new migrate
 
-Revision ID: c7ae89f704bc
+Revision ID: 5392b7b3e529
 Revises: 
-Create Date: 2021-12-17 12:24:49.042169
+Create Date: 2021-12-17 21:31:07.458309
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'c7ae89f704bc'
+revision = '5392b7b3e529'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -43,7 +43,8 @@ def upgrade():
     sa.Column('post_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['commentor_id'], ['flasklogin-users.id'], ),
     sa.ForeignKeyConstraint(['post_id'], ['posts.post_id'], ),
-    sa.PrimaryKeyConstraint('comment_id')
+    sa.PrimaryKeyConstraint('comment_id'),
+    sa.UniqueConstraint('post_id')
     )
     op.create_table('following',
     sa.Column('user_id', sa.Integer(), nullable=False),

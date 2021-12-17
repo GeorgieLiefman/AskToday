@@ -8,4 +8,6 @@ class Comment(db.Model):
     text = db.Column(db.Text, nullable=False)
 
     commentor_id = db.Column(db.Integer, db.ForeignKey('flasklogin-users.id'))
-    post_id = db.Column(db.Integer, db.ForeignKey('posts.post_id'))
+
+    # one to one realtionship
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.post_id'), unique = True)

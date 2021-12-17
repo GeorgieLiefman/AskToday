@@ -14,6 +14,7 @@ comments = Blueprint('comments', __name__)
 @login_required
 def create_comment(id):
     text = request.form.get('text')
+    #text.commentor = current_user
 
     if not text:
         flash('Comment cannot be empty.', category='error')
@@ -42,7 +43,7 @@ def create_comment(id):
 
 
 
-""" @comments.route("/feed/<int:id>/create_comment/", methods=["POST"])
+""" @comments.route("/feed/<int:id>/delete_comment/", methods=["POST"])
 @login_required
 def delete_comment(comment_id):
     comment = Comment.query.filter_by(id=comment_id).first()
@@ -57,25 +58,3 @@ def delete_comment(comment_id):
         
         
     return redirect(url_for('posts.get_feed')) """
-
-
-""" 
-@comments.route("/feed/<int:id>/create_comment/", methods=["POST"])
-@login_required
-def create_comment(id):
-    post = Post.query.filter_by(post_id=id)
-    text = comment_schema.dump(request.form)
-
-    if text:
-        text.dump(text)
-        db.session.commit()
-
-    data = {
-        "page_title": "Post Detail",
-        "post": post_schema.dump(post),
-        "comment": comment_schema.dump(text.first())
-    }
-    return render_template("post_detail.html", page_data = data)
- """
-
-

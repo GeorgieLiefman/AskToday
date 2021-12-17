@@ -1,13 +1,12 @@
 from main import db
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash
-from models.comments import Comment
 
 class User(UserMixin, db.Model):
     __tablename__ = "flasklogin-users"
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(100), nullable = False)
-    email = db.Column(db.String(40), unique = True, nullable = False)
+    email = db.Column(db.String(60), unique = True, nullable = False)
     password = db.Column(db.String(200), nullable = False)
 
     posts = db.relationship(
@@ -16,7 +15,11 @@ class User(UserMixin, db.Model):
         lazy="joined"
     )
 
-    comments = db.relationship(Comment, backref='user')
+    comments = db.relationship(
+        'Comment', 
+        backref='commentor', 
+        lazy="joined"
+     )
     # To access the list of posts created by Georgie, we call Georgie.posts
     # = [<Post 1>, <Post 2>, ...]
 

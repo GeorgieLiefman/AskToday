@@ -6,6 +6,11 @@ from marshmallow.validate import Length
 class CommentSchema(ma.SQLAlchemyAutoSchema):
     comment_id = auto_field(dump_only = True)
     text = auto_field(required = True, validate = Length(min = 1))
+    
+    commentor = ma.Nested(
+        "UserSchema",
+        only = ("id", "name", "email"),
+        )
    
 
     class Meta:
