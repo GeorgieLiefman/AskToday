@@ -1,4 +1,3 @@
-from os import error
 from flask import Blueprint, request, render_template, redirect, url_for, abort
 from main import db, lm
 from models.users import User
@@ -24,9 +23,11 @@ def get_users():
     """Displays a list of users from the database."""
     data = {
     "page_title": "User Index",
-    "users": users_schema.dump(User.query.order_by(User.country).all())
+    "users": users_schema.dump(User.query.order_by(User.country).all()),
+    "group_by_country": db.session.query(func.count(User.id)).group_by(User.country)
     }
     return render_template("user_index.html", page_data = data)
+
 
 # Signup a user
 @users.route("/users/signup/", methods = ["GET", "POST"])
@@ -43,6 +44,7 @@ def sign_up():
     login_user(new_user)
     return redirect(url_for("users.get_users"))
 
+
 # Login user
 @users.route("/users/login/", methods=["GET", "POST"])
 def log_in():
@@ -58,13 +60,16 @@ def log_in():
 
     abort(401, "Login unsuccessful. Did you supply the correct username and password?")
 
+
 # Individual user account page
 @users.route("/users/account/", methods = ["GET", "POST"])
 @login_required
 def user_detail():
     if request.method == "GET":
-        data = {"page_title": "Account Details",
-        "ranked_importance": db.session.query(func.sum(Post.ranked_importance)).filter(Post.creator_id==current_user.id).scalar()}
+        data = {
+        "page_title": "Account Details",
+        "ranked_importance": db.session.query(func.sum(Post.ranked_importance)).filter(Post.creator_id==current_user.id).scalar()
+        }
         return render_template("user_details.html", page_data = data)
 
     user = User.query.filter_by(id = current_user.id)
@@ -77,6 +82,7 @@ def user_detail():
     user.update(updated_fields)
     db.session.commit()
     return redirect(url_for("users.get_users"))
+
 
 # Logout page
 @users.route("/users/logout/", methods=["POST"])

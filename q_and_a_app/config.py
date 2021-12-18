@@ -3,11 +3,7 @@ import os
 class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS=False
     SECRET_KEY = os.environ.get("SECRET_KEY")
-    
-
     MAX_CONTENT_LENGTH = 1*1024*1024
-
-
 
     @property
     def SQLALCHEMY_DATABASE_URI(self):
@@ -24,7 +20,7 @@ class Config(object):
         if not value:
             raise ValueError("AWS_ACCESS_KEY_ID is not set")
         return value
-    
+
     @property
     def AWS_SECRET_ACCESS_KEY(self):
         value = os.environ.get("AWS_SECRET_ACCESS_KEY")
@@ -38,8 +34,6 @@ class Config(object):
         if not value:
             raise ValueError("AWS_S3_BUCKET is not set")
         return value
-
-
 
 class DevelopmentConfig(Config):
     DEBUG = True

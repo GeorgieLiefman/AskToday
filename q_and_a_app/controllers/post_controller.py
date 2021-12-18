@@ -5,9 +5,7 @@ from schemas.post_schema import post_schema, posts_schema
 import boto3
 from flask_login import login_required, current_user
 
-
 posts = Blueprint('posts', __name__)
-
 
 # Homepage
 @posts.route('/', methods=["GET"])
@@ -49,7 +47,6 @@ def submit_post():
     return redirect(url_for("posts.get_feed"))
 
 
-
 # Get a specific post
 @posts.route('/feed/<int:id>/', methods=["GET"])
 def get_post(id):
@@ -75,13 +72,6 @@ def get_post(id):
     return render_template("post_detail.html", page_data = data)
 
 
-
-
-
-
-
-
-
 # Edit a specific post
 @posts.route('/feed/<int:id>/', methods=["POST"])
 @login_required
@@ -103,7 +93,7 @@ def update_post(id):
     return render_template("post_detail.html", page_data = data)
 
 
-# follow a post
+# Follow a post
 @posts.route("/feed/<int:id>/follow/", methods=["Post"])
 @login_required
 def follow_post(id):
@@ -111,6 +101,7 @@ def follow_post(id):
     post.followers.append(current_user)
     db.session.commit()
     return redirect(url_for('users.user_detail'))
+
 
 # Unfollow a post
 @posts.route("/feed/<int:id>/unfollow/", methods=["Post"])

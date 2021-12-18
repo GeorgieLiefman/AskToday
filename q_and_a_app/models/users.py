@@ -21,12 +21,6 @@ class User(UserMixin, db.Model):
         backref='commentor', 
         lazy="joined"
      )
-    # To access the list of posts created by Georgie, we call Georgie.posts
-    # = [<Post 1>, <Post 2>, ...]
-
-    # To access the creater of post_1, we call post_1.creator
-    # = <User Georgie>
-
+   
     def check_password(self, password):
-        # Check's if the hash of the user's password is correct
         return check_password_hash(self.password, password)
