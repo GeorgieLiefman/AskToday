@@ -47,13 +47,14 @@ def unlike_comment(id):
 
 
 
-
-
-
-
-
-
-
+# Delete a specific post
+@comments.route('/feed/<int:id>/delete_comment/', methods=["POST"])
+@login_required
+def delete_post(id):
+    comment = Comment.query.filter_by(comment_id=id).first()
+    db.session.delete(comment)
+    db.session.commit()
+    return redirect(url_for("posts.get_feed"))
 
 
 
