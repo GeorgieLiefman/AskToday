@@ -12,7 +12,7 @@
         <thead>
             <tr>    
                 <th>User Comment</th>
-              
+                <th>Author</th>
             </tr>
         </thead>
         {% for comment in page_data.post.comments %}
@@ -21,17 +21,20 @@
                 <td>
                     {{ comment.text }}
                     <br><br>
-                    <form action="/feed/{{ page_data.post.post_id }}/like_comment/", method="POST">
+                    <form action="/feed/{{ page_data.post.comments[0].comment_id }}/like_comment/", method="POST">
                         <button class="btn btn-sm btn-primary">Like comment</button>
                     </form>
                     <br>
-                    <form action="/feed/{{ page_data.post.post_id }}/unlike_comment/", method="POST">
+                    <form action="/feed/{{ page_data.post.comments[0].comment_id }}/unlike_comment/", method="POST">
                         <button class="btn btn-sm btn-primary">Unlike comment</button>
                     </form>
                     <br>
-                    <form action="/feed/{{ page_data.post.post_id }}/delete_comment/", method="POST">
+                    <form action="/feed/{{ page_data.post.comments[0].comment_id }}/delete_comment/", method="POST">
                         <button class="btn btn-sm btn-danger">Delete comment</button>
                     </form>
+                </td>
+                <td>
+                    {{ comment.commentor.name }}
                 </td>
             </tr>
         </tbody>
@@ -40,12 +43,13 @@
     <p><strong>Note:</strong> A post can only have a single comment. Other users will not be able to post 
         a comment if there is currently one on the post.</p>
 
-    
+    {% if not page_data.post.comments %}
     <br>
     <form class="input-group mb-3" method="Post" action="/feed/{{ page_data.post.post_id }}/create_comment/">
         <input type="text" id="text" name="text" class="form-control" placeholder="Comment something!">
         <button type="submit" class="btn btn-sm btn-primary">Comment</button>
     </form>
+    {% endif %}
 
     <br>
     <form action="/feed/{{ page_data.post.post_id }}/follow/", method="POST">

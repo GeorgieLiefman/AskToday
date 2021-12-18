@@ -71,7 +71,7 @@ def get_post(id):
         "post": post_schema.dump(post),
         "image": image_url
     }
-    print(post.comments)
+    print(data)
     return render_template("post_detail.html", page_data = data)
 
 

@@ -14,13 +14,14 @@ comments = Blueprint('comments', __name__)
 @login_required
 def create_comment(id):
     text = request.form.get('text')
-    #text.commentor = current_user
+    
     if not text:
         flash('Comment cannot be empty.', category='error')
     else:
         post = Post.query.get_or_404(id)
         if post:
             comment = Comment(text = text, commentor_id = current_user.id, post_id = id)
+            
             db.session.add(comment)
             db.session.commit()
         else:

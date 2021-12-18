@@ -20,7 +20,7 @@ class PostSchema(ma.SQLAlchemyAutoSchema):
 
     comments = ma.Nested(
         "CommentSchema",
-        only = ("comment_id", "text"),
+        only = ("comment_id", "text", "commentor"),
         many = True
     )
 
