@@ -19,12 +19,22 @@ def drop_db():
 @db_commands.cli.command("seed")
 def seed_db():
     from models.posts import Post
+    from models.comments import Comment
+    from models.users import User
     from faker import Faker
     faker = Faker()
 
     for i in range(20):
         post = Post(faker.catch_phrase())
         db.session.add(post)
+
+    for i in range(20):
+        user = User(faker.catch_phrase())
+        db.session.add(user)
+
+    for i in range(20):
+        comment = Comment(faker.catch_phrase())
+        db.session.add(comment)
 
     db.session.commit()
     print("Tables seeded!")
