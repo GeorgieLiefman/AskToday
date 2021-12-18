@@ -66,24 +66,37 @@ def reset_db():
 def export_data():
     """Outputs all of the data in the database to a .txt file."""
     from models.posts import Post
+    from schemas.post_schema import posts_schema
     from models.comments import Comment
+    from schemas.comment_schema import comments_schema
     from models.users import User
+    from schemas.user_schema import users_schema
+    
 
-    post_list = Post.query.all()
-    comment_list = Comment.query.all()
-    user_list = User.query.all()
+    post = Post.query.all()
+    post_information = posts_schema.dump(post)
+    post_data = str(post_information)
 
+    user = User.query.all()
+    user_information = users_schema.dump(user)
+    user_data = str(user_information)
+
+    comment = Post.query.all()
+    comment_information = comments_schema.dump(comment)
+    comment_data = str(comment_information)
+    
     
 
     # Use schemas to convert to dictionary which can be written to txt file
     # Use string command to turn dictionary to txt and write that text to a file
-    post_data = str(post_list)
-    comment_data = str(comment_list)
-    user_data = str(user_list)
+
+    
 
     text_file = open("data.txt", "w")
     text_file.write(post_data)
-    text_file.write(comment_data)
     text_file.write(user_data)
+    text_file.write(comment_data)
     text_file.close()
+
+    #flask db-custom export
     
