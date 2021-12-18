@@ -8,6 +8,7 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(100), nullable = False)
     email = db.Column(db.String(60), unique = True, nullable = False)
     password = db.Column(db.String(200), nullable = False)
+    country = db.Column(db.String(40), nullable = False)
 
     posts = db.relationship(
         'Post', 

@@ -24,7 +24,7 @@ def get_users():
     """Displays a list of users from the database."""
     data = {
     "page_title": "User Index",
-    "users": users_schema.dump(User.query.all())
+    "users": users_schema.dump(User.query.order_by(User.country).all())
     }
     return render_template("user_index.html", page_data = data)
 

@@ -13,6 +13,7 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
     name = auto_field(required = True, validate = validate.Length(min=1))
     email = auto_field(required = True, validate = validate.Email())
     password = fields.Method(required = True, load_only = True, deserialize = "load_password")
+    country = auto_field(required = True, validate = validate.Length(min=1))
 
     followed_posts = ma.Nested(
         "PostSchema",

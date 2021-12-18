@@ -56,21 +56,3 @@ def delete_post(id):
     db.session.delete(comment)
     db.session.commit()
     return redirect(url_for("posts.get_feed"))
-
-
-
-""" @comments.route("/feed/<int:id>/delete_comment/", methods=["POST"])
-@login_required
-def delete_comment(comment_id):
-    comment = Comment.query.filter_by(id=comment_id).first()
-
-    if not comment:
-        flash('Comment does not exist.', category='error')
-    elif current_user.id != comment.commentor_id and current_user.id != comment.post.author:
-        flash('You do not have permission to delte this comment', category='error')
-    else:
-        db.session.delete(comment)
-        db.session.commit()
-        
-        
-    return redirect(url_for('posts.get_feed')) """

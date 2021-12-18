@@ -6,6 +6,7 @@
         <tr>    
             <th>Name</th>
             <th>Email</th>
+            <th>Country</th>
         </tr>
     </thead>
     {% for user in page_data.users %}
@@ -16,6 +17,9 @@
             </td>
             <td>
                 {{ user.email }}
+            </td>
+            <td>
+                {{ user.country }}
             </td>
         </tr>
     </tbody>
