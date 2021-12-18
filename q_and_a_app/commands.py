@@ -73,7 +73,17 @@ def export_data():
     comment_list = Comment.query.all()
     user_list = User.query.all()
 
+    
 
     # Use schemas to convert to dictionary which can be written to txt file
     # Use string command to turn dictionary to txt and write that text to a file
+    post_data = str(post_list)
+    comment_data = str(comment_list)
+    user_data = str(user_list)
+
+    text_file = open("data.txt", "w")
+    text_file.write(post_data)
+    text_file.write(comment_data)
+    text_file.write(user_data)
+    text_file.close()
     
